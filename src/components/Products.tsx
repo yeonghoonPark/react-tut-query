@@ -7,7 +7,7 @@ export default function Products() {
 
   // useQuery,
   // 첫반째인자: 고유한 키값, 고유한 키값을 기준으로하여 caching을 담당하기 때문에 유니크해야 한다
-  // 두번째인자: 데이터,
+  // 두번째인자: 함수, fetch, axios등 데이터를 받아오는 로직, async await이나 promise형태로 값을 반환
   // 세번째인자: 옵셔널
   const {
     data: products,
