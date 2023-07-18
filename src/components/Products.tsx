@@ -1,27 +1,27 @@
 import React, { useState } from "react";
-import useProducsts from "../hooks/useProducsts";
 import { useQuery } from "react-query";
 import { Product } from "../models/products";
 
 export default function Products() {
-  const [isSale, setIsSale] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
 
-  // useQuery, 첫반째인자: 고유한 키값, 두번째인자: 데이터, 세번째인자: 옵셔널
+  // useQuery,
+  // 첫반째인자: 고유한 키값, 고유한 키값을 기준으로하여 caching을 담당하기 때문에 유니크해야 한다
+  // 두번째인자: 데이터,
+  // 세번째인자: 옵셔널
   const {
     data: products,
     isLoading,
     error,
-  } = useQuery<Product[]>(["products", [isSale]], async () => {
+  } = useQuery<Product[]>(["products", [isChecked]], async () => {
     console.log("fetching...");
-    return fetch(`/data/${isSale ? "sale_" : ""}products.json`).then((res) =>
+    return fetch(`/data/${isChecked ? "sale_" : ""}products.json`).then((res) =>
       res.json(),
     );
   });
 
-  // const { isLoading, products, error } = useProducsts({ isSale });
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.target.checked ? setIsSale(true) : setIsSale(false);
+    e.target.checked ? setIsChecked(true) : setIsChecked(false);
   };
 
   if (isLoading) return <div>isLoading...</div>;
@@ -30,7 +30,7 @@ export default function Products() {
   return (
     <div>
       <label>
-        <input type='checkbox' checked={isSale} onChange={handleChange} />
+        <input type='checkbox' checked={isChecked} onChange={handleChange} />
         Show only sale
       </label>
 
