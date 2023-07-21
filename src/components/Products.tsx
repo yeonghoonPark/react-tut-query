@@ -42,7 +42,7 @@ export default function Products() {
   } = useQuery<Product[]>(
     ["products", [isChecked]],
     async () => {
-      console.log("fetching...");
+      console.log("fetching...", isChecked);
       return fetch(`/data/${isChecked ? "sale_" : ""}products.json`).then(
         (res) => res.json(),
       );
@@ -50,6 +50,8 @@ export default function Products() {
     {
       // 1초 * 1분 * 5 = 5분, 마지막 값을 받는다.
       // 즉 5분간 다시 패칭을 하지 않고 캐시 된 데이터를 사용한다.(리페칭이 일어나지 않는다.)
+      // 단 시간을 지정할 때 무조건 cache를 길게 하기 보단 data가 backend에서 빈번히 업데이트가 되는지 사용자가 얼마만큼 data 업데이트가 필요한지를 고려하여 시간을 설정하는 것이 좋다.
+      // 또한 새로운 POST나 PUT 업데이트를 요구하는 경우는 invalidate를 할 수 있게 해주면 된다. (자세한 건 MainProducts.tsx 참조)
       staleTime: 1000 * 60 * 5,
     },
   );
